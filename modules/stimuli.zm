@@ -30,10 +30,10 @@ enum ItemType
 // Item table record.
 record TestItem
 {
-    int                         id;      // item trial_num
-    stimuli::ItemType           trial_type;           // item type
-    string                      sndfn;          // stimulus sound file
-    baby_control::Direction     sound_direction; // direction the sounds come from
+    int                             id;                 // item trial_num
+    stimuli::ItemType               trial_type;         // item type
+    string                          sndfn;              // stimulus sound file
+    std_baby_control::Direction     sound_direction;    // direction the sounds come from
 }
 
 // Loads item table(s) from CSV file(s) in the stimuli folder.
