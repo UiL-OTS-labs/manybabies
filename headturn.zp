@@ -23,18 +23,18 @@ HISTORY:
 
 \******************************************************************************/
 
-requires 2.0;
+requires 2.5;
 
 
 // Default/Standard modules
 import std_entry_page2;
 import std_exit_page2;
 import io_beexybox;         // Enable to use BeexyBox response box.
+import std_sound_output_device;
 
 // Custom modules
 import baby_windows3;
 import stimuli;
-import multichannel_sound_output_device;
 import familiarization::task;
 import test::task;
 
@@ -117,7 +117,7 @@ Experiment experiment
 
         on_event:exit()
         {
-            multichannel_sound_output_device.close();
+            sound_output_device.close();
             sound_playback.looper.abort();
             sound_playback.abort();
         }
@@ -136,7 +136,7 @@ Experiment experiment
         {
             abort();
 
-            device = multichannel_sound_output_device;
+            device = sound_output_device;
             clip.file = stimuli_dir() + "sounds/" + filename;
 
             start(tstart);

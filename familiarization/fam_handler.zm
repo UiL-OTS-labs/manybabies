@@ -19,7 +19,7 @@ HISTORY:
 import test::front_page;
 import test::left_page;
 import test::right_page;
-
+import validate_sound_file;
 
 // Symbolic definition of responses/events.
 enum TestEvent {
@@ -288,13 +288,13 @@ State fam_handler
 
             abort();
 
-            device = multichannel_sound_output_device;
+            device = sound_output_device;
 
             clip.file = stimuli_dir() + "sounds/" + item.sndfn;
             clip.selection_begin = 0s; //reset
             clip.fade_in_duration = 0s; //reset
 
-            multichannel_sound_output_device.validate_sample_rate(clip);
+            validate_sample_rate(clip);
 
             setup_channels();
             start(tstart);
