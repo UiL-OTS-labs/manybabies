@@ -33,8 +33,8 @@ SoundPlaybackDevice sound_output_device
         string sound_device = "sounddev";
         if (have_option(sound_device)) {
             device_id = int(option_value(sound_device));
-            println("Using sound device = " + device_id);
         }
+        println("Using sound device = " + device_id);
         open(
             PLAYBACK_NUM_CHANNELS,
             PLAYBACK_SAMPLE_RATE,
