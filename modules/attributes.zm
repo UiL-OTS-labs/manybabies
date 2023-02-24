@@ -78,33 +78,61 @@ FieldDefInit[] participant_attribute_defs =
         ""
     },
     {
-          // Attribute id.
-          "order",
+        // Attribute id.
+        "order",
 
-          // Attribute type.
-          FIELD_TYPE_INT,
+        // Attribute type.
+        FIELD_TYPE_INT,
 
-          // Attribute description.
-          "Which stimulus order to use (1-4).",
+        // Attribute description.
+        "Which stimulus order to use (1-4).",
 
-          // Set if attribute may identify a person.
-          false,
+        // Set if attribute may identify a person.
+        false,
 
-          // Set if attribute may contain sentitive information.
-          false,
+        // Set if attribute may contain sentitive information.
+        false,
 
-          // Set to exclude attribute from export.
-          false,
+        // Set to exclude attribute from export.
+        false,
 
-          // Set to show attribute in zepman record list.
-          false,
+        // Set to show attribute in zepman record list.
+        false,
 
-          // Set if attribute is required for experiment.
-          true,
+        // Set if attribute is required for experiment.
+        true,
 
-          // Not used.
-          ""
-      },
+        // Not used.
+        ""
+    },
+    {
+        // Attribute id.
+        "stimlang", // short for stimulus language
+
+        // Attribute type.
+        FIELD_TYPE_ENUM,
+
+        // Attribute description.
+        "The desired language (Dutch, Norwegian) of the stimuli",
+
+        // Set if attribute may identify a person.
+        false,
+
+        // Set if attribute may contain sentitive information.
+        false,
+
+        // Set to exclude attribute from export.
+        false,
+
+        // Set to show attribute in zepman record list.
+        false,
+
+        // Set if attribute is required for experiment.
+        true,
+
+        // Enumerator list.
+        "Dutch|Norwegian"
+    },
 }
 
 
