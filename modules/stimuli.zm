@@ -37,16 +37,29 @@ record TestItem
 }
 
 // Loads item table(s) from CSV file(s) in the stimuli folder.
-int read_stimuli_list(TestItem[] target, string filename, bool skip_header_row = true, int skip_lines_before_header = 1)
+int read_stimuli_list(
+        TestItem[] target,
+        string filename,
+        bool skip_header_row = true,
+        int skip_lines_before_header = 1,
+        string language = "",
+        string postfix = ""
+        )
 {
-	// Load data into test_prac_items table.
+	// Load data into target.
     target.load(stimuli_dir() + filename,
-        skip_header_row,           // if true, file contains a header row
-        skip_lines_before_header);             // number of lines to skip before header and data
+        skip_header_row,                    // if true, file contains a header row
+        skip_lines_before_header);          // number of lines to skip before header and data
     if( error() )
     {
         print_error("Something went wrong when trying to read a stimulus list from the file " + stimuli_dir() + filename + "\n");
         return ERROR;
+    }
+    
+    int i = 0;
+    while (i < target.size) {
+        target[i].sndfn += language + postfix;
+        i++;
     }
 
     return OK;
@@ -97,11 +110,16 @@ void bootstrap_stimulus_lists()
     // Check the familiarization list
     err += check_stimuli_list(familiarization::fam_items);
 
-    // Read Test stimuli list
-    err += read_stimuli_list(test::test_items,
+    // Read Test stimuli list append stimulus language and .wav
+    err += read_stimuli_list(
+        test::test_items,
         "test_items_order_"
         + expdb.participant.get_int_field("order")
-        + ".csv");
+        + ".csv",
+        true, // skip header
+        1,    // lines before header
+        expdb.participant.get_enum_field("stimlang"),
+        ".wav");
 
     // Check the test list
     err += check_stimuli_list(test::test_items);
