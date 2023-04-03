@@ -100,7 +100,7 @@ State validation_handler
         {
             init() {
                 num_channels = 1;
-                duration = 1s;
+                duration = 500ms;
             }
         }
 
@@ -108,7 +108,7 @@ State validation_handler
         {
             init() {
                 num_channels = 1;
-                duration = 1s;
+                duration = 500ms;
                 frequency_all = 440;
             }
         }
@@ -117,7 +117,7 @@ State validation_handler
         {
             init() {
                 num_channels = 1;
-                duration = 1s;
+                duration = 500ms;
             }
         }
 
@@ -125,7 +125,7 @@ State validation_handler
         {
             init() {
                 num_channels = 1;
-                duration = 1s;
+                duration = 500ms;
                 frequency_all = 440;
             }
         }

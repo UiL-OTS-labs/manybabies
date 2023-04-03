@@ -22,9 +22,6 @@ Block validate
     }
 }
 
-// The stuff below is some validation checks to see whether zep thinks
-// the same about the monitor/sounds settings as we do.
-
 void action_validation(Part caller)
 {
     validate.enter(caller);
