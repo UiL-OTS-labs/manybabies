@@ -1,0 +1,31 @@
+
+import validation_handler;
+
+Block validate
+{
+
+    on_event:entry()
+    {
+        num_cycles = 2;
+        validation_handler.setup();
+    }
+
+    Trial trial
+    {
+
+        entry()
+        {
+            validation_handler.action(
+                    this,
+                    reference_time + 2s);
+        }
+    }
+}
+
+// The stuff below is some validation checks to see whether zep thinks
+// the same about the monitor/sounds settings as we do.
+
+void action_validation(Part caller)
+{
+    validate.enter(caller);
+}
