@@ -74,10 +74,12 @@ Page left_page
                 init()
                 {
                     text = "left";
-                    font_size = 50;
+                    font_size = 100;
                     font_family = TEST_PAGE_STIMULUS_FONT_FAMILY;
                     line_pattern_color = CONTROL_SIDE_LIGHT_COLOR;
-                    text_alignment = ALIGN_CENTER;
+                    text_alignment = ALIGN_BEGIN;
+                    offset_x = -string_width(text)/2;
+                    offset_y = -string_height(text)/2;
                 }
             }
         }
