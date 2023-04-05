@@ -1,0 +1,28 @@
+
+import validation_handler;
+
+Block validate
+{
+
+    on_event:entry()
+    {
+        num_cycles = 2;
+        validation_handler.setup();
+    }
+
+    Trial trial
+    {
+
+        entry()
+        {
+            validation_handler.action(
+                    this,
+                    reference_time + 2s);
+        }
+    }
+}
+
+void action_validation(Part caller)
+{
+    validate.enter(caller);
+}

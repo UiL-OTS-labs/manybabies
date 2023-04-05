@@ -1,0 +1,224 @@
+
+import front_page;
+import left_page;
+import right_page;
+import defs;
+
+enum TestEvent {
+    AUDIO_FINISH,
+}
+
+State validation_handler
+{
+    Direction   lightpos;       // which side light is presented
+
+    on_event:exit()
+    {
+        stop_light();
+    }
+
+    void start_light(int mask)
+    {
+        if (mask & FRONT_SIDE) test::front_page.show_validation();
+        if (mask & LEFT_SIDE) test::left_page.show_validation();
+        if (mask & RIGHT_SIDE) test::right_page.show_validation();
+    }
+
+
+    void stop_light()
+    {
+        test::front_page.hide_validation();
+        test::left_page.hide_validation();
+        test::right_page.hide_validation();
+    }
+
+    State front
+    {
+        on_event:entry()
+        {
+            lightpos = FRONT_SIDE;
+            stop_light();
+            start_light(lightpos);
+            audio.play(event_time + INTERSTIMULUS_INTERVAL, this);
+        }
+
+        on_event:message()
+        {
+            if (message_arg == AUDIO_FINISH)
+                left.enter();
+        }
+    }
+
+    State left
+    {
+        on_event:entry()
+        {
+            lightpos = LEFT_SIDE;
+            stop_light();
+            start_light(lightpos);
+            audio.play(event_time + INTERSTIMULUS_INTERVAL, this);
+        }
+        
+        on_event:message()
+        {
+            if (message_arg == AUDIO_FINISH)
+                right.enter();
+        }
+    }
+
+    State right
+    {
+        on_event:entry()
+        {
+            lightpos = RIGHT_SIDE;
+            stop_light();
+            start_light(lightpos);
+            audio.play(event_time + INTERSTIMULUS_INTERVAL, this);
+        }
+
+        on_event:message()
+        {
+            if (message_arg == AUDIO_FINISH)
+                done(CONTINUE);
+        }
+    }
+
+    SoundPlayback audio
+    {
+        init()
+        {
+            num_channels = PLAYBACK_NUM_CHANNELS;
+        }
+
+        finish()
+        {
+            signal_target(AUDIO_FINISH);
+        }
+
+        // Sound source/producer object.
+        SilenceGenerator s1
+        {
+            init() {
+                num_channels = 1;
+                duration = 500ms;
+            }
+        }
+
+        BeepGenerator beep1
+        {
+            init() {
+                num_channels = 1;
+                duration = 500ms;
+                frequency_all = 440;
+                fade_in_duration = 100ms;
+                fade_out_duration = 100ms;
+                scaling_all = 0.67;
+            }
+        }
+
+        SilenceGenerator s2
+        {
+            init() {
+                num_channels = 1;
+                duration = 500ms;
+            }
+        }
+
+        BeepGenerator beep2
+        {
+            init() {
+                num_channels = 1;
+                duration = 500ms;
+                frequency_all = 440;
+                fade_in_duration = 100ms;
+                fade_out_duration = 100ms;
+                scaling_all = 0.67;
+            }
+        }
+
+        void setup_channels()
+        {
+            this.scaling_all = 0;
+
+            if (num_channels == 2) { // to develop on hw with < 4 channels
+                if(lightpos & FRONT_SIDE)
+                {
+                     this.scaling[0] = PLAYBACK_SCALING_VOLUME;
+                     this.scaling[1] = PLAYBACK_SCALING_VOLUME;
+                }
+
+                if(lightpos & LEFT_SIDE)
+                    this.scaling[0] = PLAYBACK_SCALING_VOLUME;
+
+                if(lightpos & RIGHT_SIDE)
+                    this.scaling[1] = PLAYBACK_SCALING_VOLUME;
+            }
+            else { // in the lab.
+
+                if(lightpos & FRONT_SIDE) {
+                     this.scaling[FRONT_RIGHT] = PLAYBACK_SCALING_VOLUME;
+                     this.scaling[FRONT_LEFT] = PLAYBACK_SCALING_VOLUME;
+                }
+
+                if(lightpos & LEFT_SIDE)
+                    this.scaling[REAR_LEFT] = PLAYBACK_SCALING_VOLUME;
+
+                if(lightpos & RIGHT_SIDE)
+                    this.scaling[REAR_RIGHT] = PLAYBACK_SCALING_VOLUME;
+            }
+        }
+
+        void play(time tstart, Object target)
+        {
+            abort();
+
+            device = sound_output_device;
+
+            setup_channels();
+            start(tstart);
+
+            this.target = target;
+        }
+    }
+
+    // Signals the initiator of the trial that we're done.
+    void done(int msgid)
+    {
+        signal_target(msgid);   // tell caller we're done
+        target = null;
+    }
+
+
+    //==========================================================================
+
+
+    // Performs preparatory work required before using this page.
+    void setup()
+    {
+        enter();
+    }
+
+
+    // Performs cleaning up if necessary.
+    void cleanup(time t)
+    {
+        audio.abort();
+
+        leave();
+    }
+
+
+    void action(Object caller, time tref)
+    {
+        // Show pages representing the front and side lights on the appropriate
+        // test windows.
+        test_window1.show_page(test::front_page);
+        test_window2.show_page(test::left_page);
+        test_window3.show_page(test::right_page);
+
+        front.enter();
+
+        // Remember who to signal when the trial is over.
+        target = caller;
+    }
+}

@@ -68,6 +68,20 @@ Page right_page
                     scaling_y = scaling_x;
                 }
             }
+            
+            TextShape validation
+            {
+                init()
+                {
+                    text = "right";
+                    font_size = 100;
+                    font_family = TEST_PAGE_STIMULUS_FONT_FAMILY;
+                    line_pattern_color = CONTROL_SIDE_LIGHT_COLOR;
+                    text_alignment = ALIGN_BEGIN;
+                    offset_x = -string_width(text)/2;
+                    offset_y = -string_height(text)/2;
+                }
+            }
         }
 
 
@@ -81,6 +95,17 @@ Page right_page
         {
             canvas.attention.abort();
             canvas.attention.is_visible = false;
+        }
+
+        void start_validation()
+        {
+            canvas.validation.start(now());
+        }
+
+        void stop_validation()
+        {
+            canvas.validation.abort();
+            canvas.validation.is_visible = false;
         }
     }
 
@@ -97,5 +122,15 @@ Page right_page
     void hide_animation()
     {
         layout.stop_attention_getter();
+    }
+    
+    void show_validation()
+    {
+        layout.start_validation();
+    }
+    
+    void hide_validation()
+    {
+        layout.stop_validation();
     }
 }
