@@ -110,6 +110,9 @@ State validation_handler
                 num_channels = 1;
                 duration = 500ms;
                 frequency_all = 440;
+                fade_in_duration = 100ms;
+                fade_out_duration = 100ms;
+                scaling_all = 0.67;
             }
         }
 
@@ -127,6 +130,9 @@ State validation_handler
                 num_channels = 1;
                 duration = 500ms;
                 frequency_all = 440;
+                fade_in_duration = 100ms;
+                fade_out_duration = 100ms;
+                scaling_all = 0.67;
             }
         }
 
